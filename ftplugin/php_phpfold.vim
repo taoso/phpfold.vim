@@ -2,6 +2,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 setlocal foldmethod=manual
+setlocal foldtext=phpfold#PHPFoldText()
 
 if !exists('g:phpfold_channel_id')
 	let s:phpfold_path = expand('<sfile>:p:h:h') . '/php/phpfold.php'

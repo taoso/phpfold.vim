@@ -50,7 +50,13 @@ class Folder extends NodeVisitorAbstract implements Handler
     public function leaveNode(Node $node)
     {
         if ($node instanceof Node\FunctionLike) {
-            $this->points[] = [$node->getLine(), $node->getAttribute('endLine')];
+            $cmt = $node->getDocComment();
+            if ($cmt) {
+                $start_line = $cmt->getLine();
+            } else {
+                $start_line = $node->getLine();
+            }
+            $this->points[] = [$start_line, $node->getAttribute('endLine')];
         }
 
         if ($node instanceof Node\Stmt\Use_) {

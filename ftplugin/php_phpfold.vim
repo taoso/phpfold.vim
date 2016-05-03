@@ -16,6 +16,7 @@ endfunction
 command! -nargs=0 PhpFold call s:fold()
 
 autocmd! BufWinEnter *.php call s:fold()
+nnoremap <buffer> zm :PhpFold<CR>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

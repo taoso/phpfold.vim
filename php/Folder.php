@@ -59,6 +59,14 @@ class Folder extends NodeVisitorAbstract implements Handler
             $this->points[] = [$start_line, $node->getAttribute('endLine')];
         }
 
+        if ($node instanceof Node\Stmt\Property)
+        {
+            $cmt = $node->getDocComment();
+            if ($cmt) {
+                $this->points[] = [$cmt->getLine(), $node->getAttribute('endLine')];
+            }
+        }
+
         if ($node instanceof Node\Stmt\Use_) {
             $this->use_points[] = [$node->getLine(), $node->getAttribute('endLine')];
         }

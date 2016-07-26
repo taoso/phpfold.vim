@@ -8,10 +8,13 @@
     ],
     "autoload": {
         "psr-4": {
-            "Lvht\\Fold\\": "php/"
+            "Lvht\\Phpfold\\": "php/"
         }
     },
     "require": {
         "nikic/php-parser": "^2.1"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^3.1"
     }
 }

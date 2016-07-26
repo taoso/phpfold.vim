@@ -45,6 +45,53 @@ class Folder extends NodeVisitorAbstract
 
     public function leaveNode(Node $node)
     {
+        if ($node instanceof Node\Expr\Array_) {
+            $start_line = $node->getLine();
+            $end_line = $node->getAttribute('endLine');
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
+        }
+
+        if ($node instanceof Node\Stmt\TryCatch) {
+            $stmts = $node->stmts;
+            $start_line = current($stmts)->getLine();
+            $end_line = end($stmts)->getAttribute('endLine');
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
+
+            $stmts = $node->catches;
+            $start_line = current($stmts)->getAttribute('startLine') + 1;
+            $end_line = end($stmts)->getAttribute('endLine') - 1;
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
+
+            $stmts = $node->finallyStmts;
+            if ($stmts) {
+                $start_line = current($stmts)->getAttribute('startLine');
+                $end_line = end($stmts)->getAttribute('endLine');
+                if ($end_line > $start_line) {
+                    $this->points[] = [$start_line, $end_line];
+                }
+            }
+        }
+
+        if ($node instanceof Node\Stmt\Foreach_
+            || $node instanceof Node\Stmt\For_
+            || $node instanceof Node\Stmt\If_
+            || $node instanceof Node\Stmt\ElseIf_
+            || $node instanceof Node\Stmt\Else_
+        ) {
+            $stmts = $node->stmts;
+            $start_line = current($stmts)->getLine();
+            $end_line = end($stmts)->getAttribute('endLine');
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
+        }
+
         if ($node instanceof Node\FunctionLike) {
             $cmt = $node->getDocComment();
             if ($cmt) {
@@ -52,7 +99,10 @@ class Folder extends NodeVisitorAbstract
             } else {
                 $start_line = $node->getLine();
             }
-            $this->points[] = [$start_line, $node->getAttribute('endLine')];
+            $end_line = $node->getAttribute('endLine');
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
         }
 
         if ($node instanceof Node\Stmt\Property) {

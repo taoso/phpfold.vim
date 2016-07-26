@@ -4,18 +4,21 @@ set cpo&vim
 setlocal foldmethod=manual
 setlocal foldtext=phpfold#PHPFoldText()
 
-if !exists('g:phpfold_channel_id')
-	let s:phpfold_path = expand('<sfile>:p:h:h') . '/php/phpfold.php'
-	let g:phpfold_channel_id = rpcstart('php', [s:phpfold_path])
-endif
+function! s:doFold(status, response)
+	let points = json_decode(a:response)
+	call phpfold#Fold(points)
+	normal! zv
+	normal! zz
+endfunction
 
+let s:folder_path = 'php '.expand('<sfile>:p:h:h').'/php/phpfold.php'
 function! s:fold()
-	call rpcnotify(g:phpfold_channel_id, 'fold', expand('%:p'))
+	let php_path = expand('%:p')
+	let cmd = s:folder_path.' '.php_path
+	let job = job_start(cmd, {'out_cb': function('s:doFold')})
 endfunction
 
 command! -nargs=0 PhpFold call s:fold()
-
-autocmd! BufWinEnter *.php call s:fold()
 nnoremap <buffer> zm :PhpFold<CR>
 
 let &cpo = s:save_cpo

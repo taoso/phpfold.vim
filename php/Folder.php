@@ -3,12 +3,11 @@ namespace Lvht\Phpfold;
 
 use PhpParser\Node;
 use PhpParser\NodeTraverser;
+use PhpParser\Parser;
 use PhpParser\NodeVisitorAbstract;
 use PhpParser\ParserFactory;
-use Lvht\MsgpackRpc\Handler;
-use Lvht\MsgpackRpc\Server;
 
-class Folder extends NodeVisitorAbstract implements Handler
+class Folder extends NodeVisitorAbstract
 {
     /**
      * @var NodeTraverser
@@ -16,14 +15,10 @@ class Folder extends NodeVisitorAbstract implements Handler
     private $traverser;
 
     /**
-     * @var Server
+     * @var Parser
      */
-    private $server;
-
     private $parser;
-
     private $points = [];
-
     private $use_points = [];
 
     public function __construct()
@@ -43,8 +38,9 @@ class Folder extends NodeVisitorAbstract implements Handler
             $this->points[] = [current($this->use_points)[0], end($this->use_points)[1]];
         }
 
-        $this->vimFold($this->points);
+        $points = $this->points;
         $this->points = [];
+        return $points;
     }
 
     public function leaveNode(Node $node)
@@ -59,8 +55,7 @@ class Folder extends NodeVisitorAbstract implements Handler
             $this->points[] = [$start_line, $node->getAttribute('endLine')];
         }
 
-        if ($node instanceof Node\Stmt\Property)
-        {
+        if ($node instanceof Node\Stmt\Property) {
             $cmt = $node->getDocComment();
             if ($cmt) {
                 $this->points[] = [$cmt->getLine(), $node->getAttribute('endLine')];
@@ -70,15 +65,5 @@ class Folder extends NodeVisitorAbstract implements Handler
         if ($node instanceof Node\Stmt\Use_) {
             $this->use_points[] = [$node->getLine(), $node->getAttribute('endLine')];
         }
-    }
-
-    public function setServer(Server $server)
-    {
-        $this->server = $server;
-    }
-
-    public function vimFold($points)
-    {
-        $this->server->call('vim_call_function', ['phpfold#Fold', [$points]]);
     }
 }

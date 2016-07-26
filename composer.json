@@ -8,11 +8,10 @@
     ],
     "autoload": {
         "psr-4": {
-            "Lvht\\Phpfold\\": "php/"
+            "Lvht\\Fold\\": "php/"
         }
     },
     "require": {
-        "nikic/php-parser": "^2.1",
-        "lvht/msgpack-rpc": "dev-master"
+        "nikic/php-parser": "^2.1"
     }
 }

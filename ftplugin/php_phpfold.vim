@@ -15,7 +15,12 @@ let s:folder_path = 'php '.expand('<sfile>:p:h:h').'/php/phpfold.php'
 function! s:fold()
 	let php_path = expand('%:p')
 	let cmd = s:folder_path.' '.php_path
-	let job = job_start(cmd, {'out_cb': function('s:doFold')})
+	echo cmd
+	if has('job')
+		let job = job_start(cmd, {'out_cb': function('s:doFold')})
+	else
+		let job = jobstart(cmd, {'on_stdout': function('s:doFold')})
+	endif
 endfunction
 
 command! -nargs=0 PhpFold call s:fold()

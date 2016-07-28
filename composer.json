@@ -13,8 +13,5 @@
     },
     "require": {
         "nikic/php-parser": "^2.1"
-    },
-    "require-dev": {
-        "symfony/var-dumper": "^3.1"
     }
 }

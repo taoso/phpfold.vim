@@ -83,6 +83,7 @@ class Folder extends NodeVisitorAbstract
             || $node instanceof Node\Stmt\If_
             || $node instanceof Node\Stmt\ElseIf_
             || $node instanceof Node\Stmt\Else_
+            || $node instanceof Node\Stmt\While_
         ) {
             $stmts = $node->stmts;
             $start_line = current($stmts)->getLine();

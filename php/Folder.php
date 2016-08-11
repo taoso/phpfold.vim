@@ -54,28 +54,9 @@ class Folder extends NodeVisitorAbstract
         }
 
         if ($node instanceof Node\Stmt\TryCatch) {
-            $stmts = $node->stmts;
-            $start_line = current($stmts)->getLine();
-            $end_line = end($stmts)->getAttribute('endLine');
-            if ($end_line > $start_line) {
-                $this->points[] = [$start_line, $end_line];
-            }
-
-            $stmts = $node->catches;
-            $start_line = current($stmts)->getAttribute('startLine') + 1;
-            $end_line = end($stmts)->getAttribute('endLine') - 1;
-            if ($end_line > $start_line) {
-                $this->points[] = [$start_line, $end_line];
-            }
-
-            $stmts = $node->finallyStmts;
-            if ($stmts) {
-                $start_line = current($stmts)->getAttribute('startLine');
-                $end_line = end($stmts)->getAttribute('endLine');
-                if ($end_line > $start_line) {
-                    $this->points[] = [$start_line, $end_line];
-                }
-            }
+            $this->foldStmts($node->stmts);
+            $this->foldStmts($node->catches);
+            $this->foldStmts($node->finallyStmts);
         }
 
         if ($node instanceof Node\Stmt\Foreach_
@@ -85,12 +66,7 @@ class Folder extends NodeVisitorAbstract
             || $node instanceof Node\Stmt\Else_
             || $node instanceof Node\Stmt\While_
         ) {
-            $stmts = $node->stmts;
-            $start_line = current($stmts)->getLine();
-            $end_line = end($stmts)->getAttribute('endLine');
-            if ($end_line > $start_line) {
-                $this->points[] = [$start_line, $end_line];
-            }
+            $this->foldStmts($node->stmts);
         }
 
         if ($node instanceof Node\FunctionLike) {
@@ -115,6 +91,17 @@ class Folder extends NodeVisitorAbstract
 
         if ($node instanceof Node\Stmt\Use_) {
             $this->use_points[] = [$node->getLine(), $node->getAttribute('endLine')];
+        }
+    }
+
+    private function foldStmts($stmts)
+    {
+        if ($stmts) {
+            $start_line = current($stmts)->getLine();
+            $end_line = end($stmts)->getAttribute('endLine');
+            if ($end_line > $start_line) {
+                $this->points[] = [$start_line, $end_line];
+            }
         }
     }
 }

@@ -8,7 +8,6 @@ function! s:doFold(status, response)
 	let points = json_decode(a:response)
 	call phpfold#Fold(points)
 	normal! zv
-	normal! zz
 endfunction
 
 let s:folder_path = 'php '.expand('<sfile>:p:h:h').'/php/phpfold.php'

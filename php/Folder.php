@@ -65,6 +65,7 @@ class Folder extends NodeVisitorAbstract
             || $node instanceof Node\Stmt\ElseIf_
             || $node instanceof Node\Stmt\Else_
             || $node instanceof Node\Stmt\While_
+            || $node instanceof Node\Stmt\Case_
         ) {
             $this->foldStmts($node->stmts);
         }

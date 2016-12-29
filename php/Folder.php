@@ -61,10 +61,22 @@ class Folder extends NodeVisitorAbstract
 
         if ($node instanceof Node\Stmt\Foreach_
             || $node instanceof Node\Stmt\For_
-            || $node instanceof Node\Stmt\If_
-            || $node instanceof Node\Stmt\ElseIf_
-            || $node instanceof Node\Stmt\Else_
             || $node instanceof Node\Stmt\While_
+            || $node instanceof Node\Stmt\For_
+        ) {
+            $this->foldNode($node);
+        }
+
+        if ($node instanceof Node\Stmt\If_) {
+            if ($node->elseifs || $node->else) {
+                $this->foldStmts($node->stmts);
+            } else {
+                $this->foldNode($node);
+            }
+        }
+
+        if ($node instanceof Node\Stmt\ElseIf_
+            || $node instanceof Node\Stmt\Else_
             || $node instanceof Node\Stmt\Case_
         ) {
             $this->foldStmts($node->stmts);
@@ -103,6 +115,16 @@ class Folder extends NodeVisitorAbstract
             if ($end_line > $start_line) {
                 $this->points[] = [$start_line, $end_line];
             }
+        }
+    }
+
+    private function foldNode($node)
+    {
+        $start_line = $node->getLine();
+        $end_line = $node->getAttribute('endLine');
+
+        if ($end_line > $start_line) {
+            $this->points[] = [$start_line, $end_line];
         }
     }
 }

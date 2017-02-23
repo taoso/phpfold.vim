@@ -3,9 +3,7 @@ function! phpfold#Fold(points) " {{{
 		let lineStart = point[0]
 		let lineStop = point[1]
 		if foldlevel(lineStart) != 0
-			if foldclosedend(lineStart) == lineStop
-				continue
-			endif
+			continue
 		endif
 		exec lineStart.','.lineStop.'fold'
 	endfor

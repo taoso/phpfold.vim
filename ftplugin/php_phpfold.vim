@@ -10,7 +10,7 @@ function! s:doFold(status, response)
 	normal! zv
 endfunction
 
-let s:folder_path = 'php '.expand('<sfile>:p:h:h').'/php/phpfold.php'
+let s:folder_path = 'php '.expand('<sfile>:p:h:h').'/phpfold.vim.phar'
 function! s:fold()
 	let php_path = expand('%:p')
 	let cmd = s:folder_path.' '.php_path

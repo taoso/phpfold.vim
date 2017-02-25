@@ -13,5 +13,8 @@
     },
     "require": {
         "nikic/php-parser": "^2.1"
-    }
+    },
+    "bin": [
+        "./php/phpfold.php"
+    ]
 }

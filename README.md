@@ -1,10 +1,12 @@
 # phpfold
 
+Fold according php ast. Thanks to [PHP Parser](https://github.com/nikic/PHP-Parser).
+
 # install
 
 For vim-plug:
 ```
-Plug 'phpvim/phpfold.vim', { 'for': 'php', 'do':'composer update' }
+Plug 'lvht/phpfold.vim', { 'for': 'php' }
 ```
 
 # usage

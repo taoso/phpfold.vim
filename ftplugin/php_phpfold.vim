@@ -1,3 +1,9 @@
+if exists('b:phpfolded')
+	finish
+endif
+
+let b:phpfolded = 1
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -23,6 +29,7 @@ endfunction
 
 command! -nargs=0 PhpFold call s:fold()
 nnoremap <buffer> zm :PhpFold<CR>
+call s:fold()
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

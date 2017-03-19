@@ -29,6 +29,10 @@ class Folder extends NodeVisitorAbstract
 
     public function fold($path)
     {
+        if (!file_exists($path)) {
+            return [];
+        }
+
         $this->traverser->addVisitor($this);
         $code = file_get_contents($path);
         $stmts = $this->parser->parse($code);

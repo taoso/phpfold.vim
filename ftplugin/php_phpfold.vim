@@ -10,7 +10,7 @@ set cpo&vim
 setlocal foldmethod=manual
 setlocal foldtext=phpfold#PHPFoldText()
 
-function! s:doFold(status, response)
+function! s:doFold(status, response, ...)
 	let points = json_decode(a:response)
 	call phpfold#Fold(points)
 	normal! zv

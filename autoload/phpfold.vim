@@ -1,13 +1,38 @@
 function! phpfold#Fold(points) " {{{
+	let step = <SID>getStepOutsideFold()
 	for point in a:points
-		let lineStart = point[0]
-		let lineStop = point[1]
+		let lineStart = <SID>getFarestSurroundingBlankLine(point[0], step)
+		let lineStop = <SID>getFarestSurroundingBlankLine(point[1], step)
 		if foldlevel(lineStart) != 0
 			continue
 		endif
 		exec lineStart.','.lineStop.'fold'
 	endfor
 endfunction " }}}
+
+function! s:getStepOutsideFold() "{{{
+	if exists('g:phpfold_include_surround_blank_lines')
+		return 'upward' is g:phpfold_include_surround_blank_lines ? -1 : 1
+	endif
+
+	return 0
+endfunction	}}}"
+
+function! s:getFarestSurroundingBlankLine(lineNumber, step)
+		if 0 is a:step
+			return a:lineNumber
+		endif
+
+    let step = a:step > 0 ? 1 : -1
+    let extremalLineNumber = (step >= 0) ? line('$') : 1
+    let currentLine = a:lineNumber
+
+    while currentLine != extremalLineNumber && getline(currentLine + step) =~? '\v^\s*$'
+        let currentLine += step
+    endwhile
+
+    return currentLine
+endfunction
 
 function! phpfold#PHPFoldText() " {{{
 	let currentLine = v:foldstart

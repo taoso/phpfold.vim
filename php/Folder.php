@@ -59,12 +59,15 @@ class Folder extends NodeVisitorAbstract
 
         if ($node instanceof Node\Stmt\TryCatch) {
             $this->foldStmts($node->stmts);
-            $this->foldStmts($node->catches);
+            foreach ($node->catches as $catche) {
+                $this->foldStmts($catche->stmts);
+            }
             $this->foldStmts($node->finallyStmts);
         }
 
         if ($node instanceof Node\Stmt\Foreach_
             || $node instanceof Node\Stmt\For_
+            || $node instanceof Node\Stmt\Do_
             || $node instanceof Node\Stmt\While_
             || $node instanceof Node\Stmt\For_
             || $node instanceof Node\Stmt\Case_

@@ -63,6 +63,7 @@ class Folder extends NodeVisitorAbstract
                 $this->foldStmts($catche->stmts);
             }
             $this->foldStmts($node->finallyStmts);
+            $this->foldNode($node);
         }
 
         if ($node instanceof Node\Stmt\Foreach_
@@ -79,9 +80,8 @@ class Folder extends NodeVisitorAbstract
         if ($node instanceof Node\Stmt\If_) {
             if ($node->elseifs || $node->else) {
                 $this->foldStmts($node->stmts);
-            } else {
-                $this->foldNode($node);
             }
+            $this->foldNode($node);
         }
 
         if ($node instanceof Node\Stmt\ElseIf_

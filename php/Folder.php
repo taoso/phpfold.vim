@@ -49,7 +49,7 @@ class Folder extends NodeVisitorAbstract
 
     public function leaveNode(Node $node)
     {
-        if ($node instanceof Node\Expr\Array_) {
+        if ($node instanceof Node\Expr\Array_ || $node instanceof Node\Expr\FuncCall) {
             $start_line = $node->getLine();
             $end_line = $node->getAttribute('endLine');
             if ($end_line > $start_line) {

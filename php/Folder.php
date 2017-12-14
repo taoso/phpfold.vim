@@ -52,6 +52,7 @@ class Folder extends NodeVisitorAbstract
         if ($node instanceof Node\Expr\Array_
             || $node instanceof Node\Expr\FuncCall
             || $node instanceof Node\Expr\MethodCall
+            || $node instanceof Node\Scalar\String_
             || $node instanceof Node\Expr\StaticCall)
         {
             $start_line = $node->getLine();

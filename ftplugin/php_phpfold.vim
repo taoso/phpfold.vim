@@ -11,6 +11,9 @@ setlocal foldmethod=manual
 setlocal foldtext=phpfold#PHPFoldText()
 
 function! s:doFold(status, response, ...)
+	if len(a:response) == 1 && a:response[0] == ''
+		return
+	endif
 	let points = json_decode(a:response)
 	call phpfold#Fold(points)
 	normal! zv

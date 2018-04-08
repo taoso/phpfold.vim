@@ -95,6 +95,14 @@ class Folder extends NodeVisitorAbstract
             $this->foldStmts($node->stmts);
         }
 
+        if ($node instanceof Node\Stmt\Class_) {
+            if ($node->isAnonymous()) {
+                $start_line = $node->getLine();
+                $end_line = $node->getAttribute('endLine');
+                $this->points[] = [$start_line, $end_line];
+            }
+        }
+
         if ($node instanceof Node\FunctionLike) {
             $cmt = $node->getDocComment();
             if ($cmt) {

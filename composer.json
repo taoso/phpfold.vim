@@ -12,7 +12,7 @@
         }
     },
     "require": {
-        "nikic/php-parser": "^2.1"
+        "nikic/php-parser": "^3.1"
     },
     "bin": [
         "./php/phpfold.php"

@@ -67,7 +67,9 @@ class Folder extends NodeVisitorAbstract
             foreach ($node->catches as $catche) {
                 $this->foldStmts($catche->stmts);
             }
-            $this->foldStmts($node->finallyStmts);
+            if (isset($node->finallyStmts)) {
+                $this->foldStmts($node->finallyStmts);
+            }
             $this->foldNode($node);
         }
 
